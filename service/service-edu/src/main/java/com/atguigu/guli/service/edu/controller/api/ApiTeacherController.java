@@ -3,15 +3,17 @@ package com.atguigu.guli.service.edu.controller.api;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.edu.entity.Teacher;
 import com.atguigu.guli.service.edu.service.TeacherService;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.generator.config.IFileCreate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(tags = "讲师管理")
+@Api(tags = "讲师列表")
 @RestController
 @RequestMapping("api/edu/teacher")
 public class ApiTeacherController {
@@ -25,14 +27,17 @@ public class ApiTeacherController {
         return R.ok().data("teacherlist",list);
     }
 
-    @ApiOperation(value = "根据id删除讲师",notes = "逻辑删除讲师")
-    @DeleteMapping("remove/{id}")
-    public R removeById(@PathVariable String id){
-        boolean b = teacherService.removeById(id);
-        if (b){
-            return R.ok().message("删除成功");
-        } else {
-            return R.error().message("删除失败");
-        }
+    @ApiOperation(value = "获取分页查询讲师列表")
+    @GetMapping("list/{page}/{limit}")
+    public R listPage(
+            @ApiParam(value = "当前页码",required = true)
+            @PathVariable Long page,
+            @ApiParam(value = "每页记录数",required = true)
+            @PathVariable Long limit){
+        Page<Teacher> pageParam = new Page<>(page, limit);
+        teacherService.page(pageParam);
+        return R.ok().data("page",pageParam);
     }
+
+
 }

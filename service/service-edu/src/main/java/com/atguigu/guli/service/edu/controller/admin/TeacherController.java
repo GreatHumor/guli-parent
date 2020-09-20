@@ -3,6 +3,7 @@ package com.atguigu.guli.service.edu.controller.admin;
 
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.edu.entity.Teacher;
+import com.atguigu.guli.service.edu.entity.query.TeacherQuery;
 import com.atguigu.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
@@ -38,7 +39,9 @@ public class TeacherController {
 
     @ApiOperation(value = "根据id删除讲师",notes = "逻辑删除讲师")
     @DeleteMapping("remove/{id}")
-    public R removeById(@PathVariable String id){
+    public R removeById(
+            @ApiParam(value = "讲师id",required = true)
+            @PathVariable String id){
         boolean b = teacherService.removeById(id);
         if (b){
             return R.ok().message("删除成功");
@@ -58,15 +61,36 @@ public class TeacherController {
         }
     }
 
-    @ApiOperation(value = "获取分页查询讲师列表")
+//    @ApiOperation(value = "获取分页查询所有讲师列表")
+//    @GetMapping("list/{page}/{limit}")
+//    public R listPage(
+//            @ApiParam(value = "当前页码",required = true)
+//            @PathVariable Long page,
+//            @ApiParam(value = "每页记录数",required = true)
+//            @PathVariable Long limit){
+//        Page<Teacher> pageParam = new Page<>(page, limit);
+//        teacherService.page(pageParam);
+//        return R.ok().data("page",pageParam);
+//    }
+
+    /**
+     * 条件查询
+     * @param page
+     * @param limit
+     * @return
+     */
+    @ApiOperation(value = "获取分页查询所有讲师列表")
     @GetMapping("list/{page}/{limit}")
     public R listPage(
             @ApiParam(value = "当前页码",required = true)
             @PathVariable Long page,
             @ApiParam(value = "每页记录数",required = true)
-            @PathVariable Long limit){
+            @PathVariable Long limit,
+            @ApiParam(value = "讲师查询对象",required = false)
+            TeacherQuery teacherQuery
+    ){
         Page<Teacher> pageParam = new Page<>(page, limit);
-        teacherService.page(pageParam);
+        teacherService.selectPage(pageParam,teacherQuery);
         return R.ok().data("page",pageParam);
     }
 
