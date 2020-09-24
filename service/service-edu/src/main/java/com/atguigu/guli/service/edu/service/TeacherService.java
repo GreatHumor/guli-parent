@@ -5,6 +5,9 @@ import com.atguigu.guli.service.edu.entity.query.TeacherQuery;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * <p>
  * 讲师 服务类
@@ -16,4 +19,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TeacherService extends IService<Teacher> {
 
     void selectPage(Page<Teacher> pageParam, TeacherQuery teacherQuery);
+
+    List<Map<String, Object>> selectNameListByKey(String key);
 }
