@@ -21,4 +21,6 @@ public interface TeacherService extends IService<Teacher> {
     void selectPage(Page<Teacher> pageParam, TeacherQuery teacherQuery);
 
     List<Map<String, Object>> selectNameListByKey(String key);
+
+    boolean removeAvatarById(String id);
 }

@@ -4,11 +4,13 @@ package com.atguigu.guli.service.edu.controller.admin;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.edu.entity.Teacher;
 import com.atguigu.guli.service.edu.entity.query.TeacherQuery;
+import com.atguigu.guli.service.edu.feign.OssFileService;
 import com.atguigu.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +29,7 @@ import java.util.Map;
 @Api(tags = "讲师管理")
 @RestController
 @RequestMapping("admin/edu/teacher")
+@Slf4j
 public class TeacherController {
 
     @Autowired
@@ -79,6 +82,14 @@ public class TeacherController {
     public R removeById(
             @ApiParam(value = "讲师id",required = true)
             @PathVariable String id){
+        // 删除头像
+        boolean b1 = teacherService.removeAvatarById(id);
+        if (!b1){
+            log.warn("讲师头像删除失败,讲师id: "+id);
+            System.out.println("讲师头像删除失败,讲师id: "+id);
+        }
+
+        // 删除讲师
         boolean b = teacherService.removeById(id);
         if (b){
             return R.ok().message("删除成功");
@@ -134,7 +145,15 @@ public class TeacherController {
     }
 
 
+    @Autowired
+    OssFileService ossFileService;
 
+    @GetMapping("/test1/{id}")
+    public R test(){
+        System.out.println("edu teacher test");
+        ossFileService.test1();
+        return R.ok();
+    }
 
 
 

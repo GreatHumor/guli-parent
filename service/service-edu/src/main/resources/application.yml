@@ -14,8 +14,22 @@ spring:
   jackson: #返回json的全局时间格式
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 # nacos服务地址
 
 #mybatis日志
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:com/atguigu/guli/service/edu/mapper/xml/*.xml
+
+#开启Feign对Sentinel的支持
+feign:
+  sentinel:
+    enabled: true
+
+logging:
+  level:
+    com.atguigu.guli.service.edu.feign.OssFileService: debug #以什么级别监控哪个接口

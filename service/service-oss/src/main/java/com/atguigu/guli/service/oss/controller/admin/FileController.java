@@ -61,7 +61,15 @@ public class FileController {
     public R removeFile(
             @ApiParam(value = "待删除文件的url",required = true)
             @RequestBody String url){
+        System.out.println("头像的url"+url);
         fileService.removeFile(url);
+        System.out.println("url文件连接成功");
         return R.ok().message("文件删除成功");
+    }
+
+    @GetMapping("/test1")
+    public R test1(){
+        System.out.println("服务已连接");
+        return R.ok().message("已连接");
     }
 }
