@@ -2,4 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.guli.service.edu.mapper.CourseMapper">
 
+    <select id="selectPageByCourseQuery" resultType="com.atguigu.guli.service.edu.entity.vo.CourseVO">
+        select
+        c.id,
+         c.title,
+         c.lesson_num AS lessonNum,
+         c.price,
+         c.cover,
+         c.buy_count AS buyCount,
+         c.view_count AS viewCount,
+         c.status,
+         c.publish_time AS publishTime,
+         t.name AS teacherName,
+         s1.title AS subjectParentTitle,
+         s2.title AS subjectTitle
+
+        from
+        edu_course c
+        LEFT JOIN edu_teacher t ON c.teacher_id=t.id
+        LEFT JOIN edu_subject s1 on c.subject_parent_id = s1.id
+        LEFT JOIN edu_subject s2 ON c.subject_id = s2.id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectCoursePublishVoById" resultType="com.atguigu.guli.service.edu.entity.vo.CoursePublishVO">
+    SELECT
+    c.id,
+    c.title,
+    c.cover,
+    c.lesson_num AS lessonNum,
+    c.price,
+    t.name AS teacherName,
+    s1.title AS subjectParentTitle,
+    s2.title AS subjectTitle
+    FROM
+    edu_course c
+    LEFT JOIN edu_teacher t ON c.teacher_id = t.id
+    LEFT JOIN edu_subject s1 ON c.subject_parent_id = s1.id
+    LEFT JOIN edu_subject s2 ON c.subject_id = s2.id
+    WHERE c.id = #{id}
+</select>
+
 </mapper>
