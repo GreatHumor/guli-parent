@@ -1,18 +1,24 @@
 package com.atguigu.guli.service.ucenter.controller.api;
 
 import com.atguigu.guli.common.util.FormUtils;
+import com.atguigu.guli.service.base.helper.JwtHelper;
+import com.atguigu.guli.service.base.helper.JwtInfo;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.base.result.ResultCodeEnum;
+import com.atguigu.guli.service.ucenter.entity.form.LoginForm;
 import com.atguigu.guli.service.ucenter.entity.form.RegisterForm;
 import com.atguigu.guli.service.ucenter.service.MemberService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.runtime.directive.contrib.For;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "会员管理")
 @CrossOrigin
@@ -56,6 +62,32 @@ public class ApiMemberController {
 
         memberService.register(registerForm);
         return R.ok().message("注册成功");
+    }
+
+    @ApiOperation(value = "会员登录")
+    @PostMapping("login")
+    public R login(
+            @ApiParam(value = "登录表单",required = true)
+            @RequestBody LoginForm loginForm){
+        String mobile = loginForm.getMobile();
+        String password = loginForm.getPassword();
+
+        if (StringUtils.isEmpty(mobile)
+            || !FormUtils.isMobile(mobile)
+            || StringUtils.isEmpty(password)){
+            return R.setResult(ResultCodeEnum.PARAM_ERROR);
+        }
+
+        String token = memberService.login(loginForm);
+        return R.ok().data("token",token).message("登录成功");
+    }
+
+    @ApiOperation(value = "根据token获取登录信息")
+    @GetMapping("auth/get-login-info")
+    public R getLoginInfo(HttpServletRequest request){
+//        String token = request.getHeader("token");
+        JwtInfo jwtInfo = JwtHelper.getJwtInfo(request);
+        return R.ok().data("userInfo",jwtInfo);
     }
 
 }

@@ -2,8 +2,11 @@ package com.atguigu.guli.service.ucenter.service.impl;
 
 import com.atguigu.guli.common.util.MD5;
 import com.atguigu.guli.service.base.exception.GuliException;
+import com.atguigu.guli.service.base.helper.JwtHelper;
+import com.atguigu.guli.service.base.helper.JwtInfo;
 import com.atguigu.guli.service.base.result.ResultCodeEnum;
 import com.atguigu.guli.service.ucenter.entity.Member;
+import com.atguigu.guli.service.ucenter.entity.form.LoginForm;
 import com.atguigu.guli.service.ucenter.entity.form.RegisterForm;
 import com.atguigu.guli.service.ucenter.mapper.MemberMapper;
 import com.atguigu.guli.service.ucenter.service.MemberService;
@@ -41,5 +44,37 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         member.setDisabled(false);
 
         baseMapper.insert(member);
+    }
+
+    @Override
+    public String login(LoginForm loginForm) {
+        String mobile = loginForm.getMobile();
+        String password = loginForm.getPassword();
+
+        // 校验手机号
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("mobile",mobile);
+        Member member = baseMapper.selectOne(queryWrapper);
+
+        if (member == null){
+            throw new GuliException(ResultCodeEnum.LOGIN_MOBILE_ERROR);
+        }
+
+        // 校验密码
+        if (!MD5.encrypt(password).equals(member.getPassword())){
+            throw new GuliException(ResultCodeEnum.LOGIN_PASSWORD_ERROR);
+        }
+
+        // 用户是否被禁用
+        if(member.getDisabled()){
+            throw new GuliException(ResultCodeEnum.LOGIN_DISABLED_ERROR);
+        }
+
+        // 生成jwt
+        JwtInfo jwtInfo = new JwtInfo(member.getId(), member.getNickname(), member.getAvatar());
+
+        String token = JwtHelper.createToken(jwtInfo);
+
+        return token;
     }
 }
