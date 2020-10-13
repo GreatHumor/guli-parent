@@ -4,6 +4,7 @@ import com.atguigu.guli.service.edu.entity.Course;
 import com.atguigu.guli.service.edu.entity.query.CourseQuery;
 import com.atguigu.guli.service.edu.entity.vo.CoursePublishVO;
 import com.atguigu.guli.service.edu.entity.vo.CourseVO;
+import com.atguigu.guli.service.edu.entity.vo.WebCourseVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
@@ -30,4 +31,8 @@ public interface CourseMapper extends BaseMapper<Course> {
             @Param(Constants.WRAPPER) QueryWrapper<CourseVO> queryWrapper);
 
     CoursePublishVO selectCoursePublishVoById(String id);
+
+    WebCourseVo selectWebCourseVoById(String courseId);
+
+    int updateViewCountById(String id);
 }

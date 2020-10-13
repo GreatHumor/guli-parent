@@ -1,9 +1,11 @@
 package com.atguigu.guli.service.edu.service.impl;
 
 import com.atguigu.guli.service.base.result.R;
+import com.atguigu.guli.service.edu.entity.Course;
 import com.atguigu.guli.service.edu.entity.Teacher;
 import com.atguigu.guli.service.edu.entity.query.TeacherQuery;
 import com.atguigu.guli.service.edu.feign.OssFileService;
+import com.atguigu.guli.service.edu.mapper.CourseMapper;
 import com.atguigu.guli.service.edu.mapper.TeacherMapper;
 import com.atguigu.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,5 +91,21 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
             }
         }
         return false;
+    }
+
+
+    @Autowired
+    private CourseMapper courseMapper;
+
+    @Override
+    public Map<String, Object> selectTeacherInfoById(String id) {
+        // 获取教师信息
+        Teacher teacher = baseMapper.selectById(id);
+        // 获取课程信息
+        List<Course> courseList = courseMapper.selectList(new QueryWrapper<Course>().eq("teacher_id", id));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("teacher",teacher);
+        map.put("courseList",courseList);
+        return map;
     }
 }

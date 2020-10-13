@@ -4,9 +4,11 @@ import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.edu.entity.*;
 import com.atguigu.guli.service.edu.entity.form.CourseInfoForm;
 import com.atguigu.guli.service.edu.entity.query.CourseQuery;
+import com.atguigu.guli.service.edu.entity.query.WebCourseQuery;
 import com.atguigu.guli.service.edu.entity.vo.ChapterVO;
 import com.atguigu.guli.service.edu.entity.vo.CoursePublishVO;
 import com.atguigu.guli.service.edu.entity.vo.CourseVO;
+import com.atguigu.guli.service.edu.entity.vo.WebCourseVo;
 import com.atguigu.guli.service.edu.feign.OssFileService;
 import com.atguigu.guli.service.edu.mapper.*;
 import com.atguigu.guli.service.edu.service.CourseDescriptionService;
@@ -187,5 +189,48 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return this.updateById(course);
     }
 
+    @Override
+    public List<Course> selectCourseByQuery(WebCourseQuery webCourseQuery) {
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        // 查询已发布的课程
+        queryWrapper.eq("status",Course.COURSE_NORMAL);
 
+        String subjectParentId = webCourseQuery.getSubjectParentId();
+        String subjectId = webCourseQuery.getSubjectId();
+        String priceSort = webCourseQuery.getPriceSort();
+        String publishTimeSort = webCourseQuery.getPublishTimeSort();
+        String buyCountSort = webCourseQuery.getBuyCountSort();
+
+
+        if (!StringUtils.isEmpty(subjectId)){
+            queryWrapper.eq("subject_id",subjectId);
+        }
+        if (!StringUtils.isEmpty(subjectParentId)){
+            queryWrapper.eq("subject_parent_id",subjectParentId);
+        }
+        if (!StringUtils.isEmpty(buyCountSort)){
+            queryWrapper.orderByDesc("buy_count");
+        }
+        if (!StringUtils.isEmpty(publishTimeSort)){
+            queryWrapper.orderByDesc("publish_time");
+        }
+        if (!StringUtils.isEmpty(priceSort)){
+            if ("1".equals(priceSort)){
+                queryWrapper.orderByAsc("price");
+            } else {
+                queryWrapper.orderByDesc("price");
+            }
+        }
+
+        return baseMapper.selectList(queryWrapper);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public WebCourseVo selectWebCourseVoById(String id) {
+        //浏览数+1
+        baseMapper.updateViewCountById(id);
+        //获取课程信息
+        return baseMapper.selectWebCourseVoById(id);
+    }
 }
