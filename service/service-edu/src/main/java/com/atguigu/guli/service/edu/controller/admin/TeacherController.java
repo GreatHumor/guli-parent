@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Helen
  * @since 2020-09-19
  */
-@CrossOrigin
+//@CrossOrigin
 @Api(tags = "讲师管理")
 @RestController
 @RequestMapping("admin/edu/teacher")

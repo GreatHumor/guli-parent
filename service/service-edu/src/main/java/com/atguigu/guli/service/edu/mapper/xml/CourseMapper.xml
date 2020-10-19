@@ -8,6 +8,11 @@
         view_count=view_count + 1
         where id = #{id}
     </update>
+    <update id="updateBuyCountById">
+        UPDATE edu_course
+    SET buy_count = buy_count + 1
+    WHERE id = #{id}
+    </update>
 
     <select id="selectPageByCourseQuery" resultType="com.atguigu.guli.service.edu.entity.vo.CourseVO">
         select
@@ -78,6 +83,18 @@
     LEFT JOIN edu_subject s2 ON c.subject_id = s2.id
     WHERE
     c.id = #{id}
+    </select>
+    <select id="selectCourseDtoById" resultType="com.atguigu.guli.service.base.dto.CourseDto">
+        select
+        c.id,
+        c.title,
+        c.price,
+        c.cover,
+        t.name AS teacherName
+
+        from edu_course c
+        left join edu_teacher t on c.teacher_id = t.id
+        where c.id = #{id}
     </select>
 
 </mapper>

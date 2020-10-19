@@ -29,7 +29,7 @@ import java.util.List;
  * @since 2020-09-19
  */
 @Api(tags="课程管理")
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/admin/edu/course")
 @Slf4j

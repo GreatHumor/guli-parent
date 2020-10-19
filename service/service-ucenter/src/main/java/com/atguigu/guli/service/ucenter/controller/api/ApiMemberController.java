@@ -1,6 +1,7 @@
 package com.atguigu.guli.service.ucenter.controller.api;
 
 import com.atguigu.guli.common.util.FormUtils;
+import com.atguigu.guli.service.base.dto.MemberDto;
 import com.atguigu.guli.service.base.helper.JwtHelper;
 import com.atguigu.guli.service.base.helper.JwtInfo;
 import com.atguigu.guli.service.base.result.R;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @Api(tags = "会员管理")
-@CrossOrigin
 @RestController
 @Slf4j
 @RequestMapping("/api/ucenter/member")
@@ -88,6 +88,13 @@ public class ApiMemberController {
 //        String token = request.getHeader("token");
         JwtInfo jwtInfo = JwtHelper.getJwtInfo(request);
         return R.ok().data("userInfo",jwtInfo);
+    }
+
+    @ApiOperation("根据会员id查询会员信息")
+    @GetMapping("get-member-dto/{memberId}")
+    public R getMemberDtoById(@PathVariable String memberId){
+        MemberDto memberDto = memberService.getMemberDtoById(memberId);
+        return R.ok().data("memberDto",memberDto);
     }
 
 }

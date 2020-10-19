@@ -1,6 +1,7 @@
 package com.atguigu.guli.service.ucenter.service.impl;
 
 import com.atguigu.guli.common.util.MD5;
+import com.atguigu.guli.service.base.dto.MemberDto;
 import com.atguigu.guli.service.base.exception.GuliException;
 import com.atguigu.guli.service.base.helper.JwtHelper;
 import com.atguigu.guli.service.base.helper.JwtInfo;
@@ -12,6 +13,7 @@ import com.atguigu.guli.service.ucenter.mapper.MemberMapper;
 import com.atguigu.guli.service.ucenter.service.MemberService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -83,5 +85,20 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("openid",openid);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    @Override
+    public MemberDto getMemberDtoById(String memberId) {
+        Member member = baseMapper.selectById(memberId);
+        System.out.println(member);
+        MemberDto memberDto = new MemberDto();
+        System.out.println(memberDto);
+        BeanUtils.copyProperties(member,memberDto);
+        return memberDto;
+    }
+
+    @Override
+    public Integer countRegisterNum(String day) {
+        return baseMapper.selectRegisterNumByDay(day);
     }
 }

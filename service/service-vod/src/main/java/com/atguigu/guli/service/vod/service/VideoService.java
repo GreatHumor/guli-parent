@@ -17,16 +17,5 @@ public interface VideoService {
     void removeVideo(String videoSourceId) throws ClientException;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    String getPlayAuth(String videoSourceId) throws com.aliyuncs.exceptions.ClientException;
 }

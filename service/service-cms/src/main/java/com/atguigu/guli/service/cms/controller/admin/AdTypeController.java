@@ -23,7 +23,6 @@ import java.util.List;
  * @author Helen
  * @since 2020-09-08
  */
-@CrossOrigin //解决跨域问题
 @Api(tags = "推荐位管理")
 @RestController
 @RequestMapping("/admin/cms/ad-type")

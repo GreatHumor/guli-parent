@@ -22,7 +22,7 @@ import java.util.List;
  * @since 2020-09-19
  */
 @Api(tags="章节管理")
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("admin/edu/chapter")
 public class ChapterController {

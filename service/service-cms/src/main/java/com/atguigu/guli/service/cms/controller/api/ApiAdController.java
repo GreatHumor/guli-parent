@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
 @Api(tags = "广告推荐")
 @RestController
 @Slf4j

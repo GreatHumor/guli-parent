@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
  * @since 2020-09-19
  */
 @Api(tags = "课时管理")
-@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping("/admin/edu/video")
@@ -48,6 +47,7 @@ public class VideoController {
             @ApiParam(value = "课时id",required = true)
             @PathVariable String id){
         boolean result = videoService.removeById(id);
+        videoService.removeMediaVideoById(id);
         if (result){
             return R.ok().message("删除课时成功");
         } else {

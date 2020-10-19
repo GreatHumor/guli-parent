@@ -1,5 +1,6 @@
 package com.atguigu.guli.service.edu.service.impl;
 
+import com.atguigu.guli.service.base.dto.CourseDto;
 import com.atguigu.guli.service.base.result.R;
 import com.atguigu.guli.service.edu.entity.*;
 import com.atguigu.guli.service.edu.entity.form.CourseInfoForm;
@@ -232,5 +233,15 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         baseMapper.updateViewCountById(id);
         //获取课程信息
         return baseMapper.selectWebCourseVoById(id);
+    }
+
+    @Override
+    public CourseDto getCourseDtoById(String courseId) {
+        return baseMapper.selectCourseDtoById(courseId);
+    }
+
+    @Override
+    public void updateBuyCountById(String id) {
+        baseMapper.updateBuyCountById(id);
     }
 }

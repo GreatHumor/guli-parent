@@ -1,5 +1,6 @@
 package com.atguigu.guli.service.ucenter.service;
 
+import com.atguigu.guli.service.base.dto.MemberDto;
 import com.atguigu.guli.service.ucenter.entity.Member;
 import com.atguigu.guli.service.ucenter.entity.form.LoginForm;
 import com.atguigu.guli.service.ucenter.entity.form.RegisterForm;
@@ -20,4 +21,8 @@ public interface MemberService extends IService<Member> {
     String login (LoginForm loginForm);
 
     Member getByOpenid(String openid);
+
+    MemberDto getMemberDtoById(String memberId);
+
+    Integer countRegisterNum(String day);
 }

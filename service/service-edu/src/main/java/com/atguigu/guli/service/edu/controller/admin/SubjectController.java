@@ -31,7 +31,7 @@ import java.util.List;
 @Api(tags = "课程类别管理")
 @RequestMapping("admin/edu/subject")
 @Slf4j
-@CrossOrigin
+//@CrossOrigin
 public class SubjectController {
 
     @Autowired

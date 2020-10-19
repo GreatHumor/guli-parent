@@ -1,5 +1,6 @@
 package com.atguigu.guli.service.edu.service;
 
+import com.atguigu.guli.service.base.dto.CourseDto;
 import com.atguigu.guli.service.edu.entity.Course;
 import com.atguigu.guli.service.edu.entity.form.CourseInfoForm;
 import com.atguigu.guli.service.edu.entity.query.CourseQuery;
@@ -49,4 +50,8 @@ public interface CourseService extends IService<Course> {
      * @return
      */
     WebCourseVo selectWebCourseVoById(String id);
+
+    CourseDto getCourseDtoById(String courseId);
+
+    void updateBuyCountById(String id);
 }

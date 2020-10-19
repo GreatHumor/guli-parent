@@ -27,7 +27,7 @@ import java.text.ParseException;
 import java.util.HashMap;
 import java.util.UUID;
 
-@CrossOrigin
+
 @Controller
 @RequestMapping("/api/ucenter/wx")
 @Slf4j
