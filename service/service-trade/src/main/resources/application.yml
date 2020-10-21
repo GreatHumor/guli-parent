@@ -49,11 +49,14 @@ feign:
 
 weixin:
   pay:
+
     #关联的公众号appid
     appId: wxf913bfa3a2c7eeeb
     #商户号
     partner: 1543338551
-    #商户key
-    partnerKey: atguigu3b0kn9g5v426MKfHQH7X8rKwb
+#    #商户key
+#    partnerKey: atguigu3b0kn9g5v426MKfHQH7X8rKwb
+    #沙箱秘钥
+    partnerKey: 23d9ce32b5bb712e68decd33753b8973
     #回调地址
     notifyUrl: http://greathumor.free.idcfengye.com/api/trade/weixin-pay/callback/notify

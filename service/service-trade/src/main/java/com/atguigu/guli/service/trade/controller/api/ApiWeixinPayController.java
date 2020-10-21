@@ -1,5 +1,6 @@
 package com.atguigu.guli.service.trade.controller.api;
 
+import com.atguigu.guli.common.util.HttpClientUtils;
 import com.atguigu.guli.common.util.StreamUtils;
 import com.atguigu.guli.service.base.helper.JwtHelper;
 import com.atguigu.guli.service.base.result.R;
@@ -82,10 +83,7 @@ public class ApiWeixinPayController {
                     System.out.println("已经支付，响应结果成功");
                     return returnXml;
                 }
-
-
             }
-
         }
         // 返回结果失败
         HashMap<String, String> returnMap = new HashMap<>();
@@ -94,6 +92,13 @@ public class ApiWeixinPayController {
         String returnXml = WXPayUtil.mapToXml(returnMap);
         System.out.println("响应结果失败");
         return returnXml;
+    }
+
+    @GetMapping("get-sign-key")
+    public R getSingKey() throws Exception {
+        String signKey = webxinPayService.getSignKey();
+        return R.ok().data("signKey", signKey);
+
     }
 
 

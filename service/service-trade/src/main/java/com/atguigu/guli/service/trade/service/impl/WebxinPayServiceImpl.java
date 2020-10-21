@@ -32,7 +32,8 @@ public class WebxinPayServiceImpl implements WebxinPayService {
         HashMap<String, String> params = null;
         Order order = null;
         try {
-            client = new HttpClientUtils("https://api.mch.weixin.qq.com/pay/unifiedorder");
+            //client = new HttpClientUtils("https://api.mch.weixin.qq.com/pay/unifiedorder");// 正式接口
+            client = new HttpClientUtils("https://api.mch.weixin.qq.com/sandboxnew/pay/unifiedorder");//仿真接口
             params = new HashMap<>();
             params.put("appid", weixinPayProperties.getAppId());
             params.put("mch_id", weixinPayProperties.getPartner());
@@ -94,5 +95,33 @@ public class WebxinPayServiceImpl implements WebxinPayService {
             throw new GuliException(ResultCodeEnum.PAY_UNIFIEDORDER_ERROR);
         }
 
+    }
+
+    @Override
+    public String getSignKey() {
+        try {
+            String url = "https://api.mch.weixin.qq.com/sandboxnew/pay/getsignkey";
+            HttpClientUtils client = new HttpClientUtils(url);
+            Map<String, String> params = new HashMap<>();
+            params.put("mch_id", weixinPayProperties.getPartner());
+            params.put("nonce_str", WXPayUtil.generateNonceStr());
+            String xmlParams = WXPayUtil.generateSignedXml(params, weixinPayProperties.getPartnerKey());
+            client.setXmlParam(xmlParams);
+            client.setHttps(true);
+
+            //发送请求
+            client.post();
+
+            //得到响应
+            String content = client.getContent();
+            System.out.println("content = " + content);
+
+            //解析响应结果
+            Map<String, String> resultMap = WXPayUtil.xmlToMap(content);
+            return resultMap.get("sandbox_signkey");
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
+            throw  new GuliException(ResultCodeEnum.PAY_UNIFIEDORDER_ERROR);
+        }
     }
 }
